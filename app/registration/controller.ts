@@ -1,5 +1,6 @@
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
+import { hashPassword } from "./actions";
 
 export const userRegistrationSchema = z
   .object({
@@ -44,10 +45,12 @@ class RegistrationsController {
       data
     ) as UserRegistrationData;
 
+    const hashedPassword = await hashPassword(password);
+
     await prisma.user.create({
       data: {
         email,
-        password,
+        password: hashedPassword,
         username,
       },
     });

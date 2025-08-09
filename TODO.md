@@ -1,6 +1,8 @@
 To-do
-
-- Password hashing with bcrypt
+:registration
+:session
+:password
+:password_reset
 
 Done:
 
@@ -8,12 +10,4 @@ Done:
 - Input validation with Zod
 - Registration form with React Hook Form
 - Server Action for form submission
-
----
-
-To implement:
-
-:registration
-:session
-:password
-:password_reset
+- Password hashing with bcrypt
