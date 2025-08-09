@@ -45,6 +45,7 @@ export async function registerUser(data: FormValues) {
     });
 
     return { success: true };
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
   } catch (error) {
     return {
       error: "Registration failed. Please try again.",

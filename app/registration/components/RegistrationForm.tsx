@@ -1,9 +1,5 @@
 "use client";
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { z } from "zod";
-import { Button } from "@/components/ui/button";
 import {
   Card,
   CardContent,
@@ -11,134 +7,51 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "@/components/ui/form";
-import { Input } from "@/components/ui/input";
-import { userRegistrationSchema } from "../controller";
-import { registerUser } from "../actions";
+import { useRegistration } from "../hooks/useRegistration";
+import { RegistrationFormProps } from "../types";
+import { Form } from "@/components/ui/form";
+import { RegistrationFormFields } from "./RegistrationFormFields";
+import { Button } from "@/components/ui/button";
 
-type FormValues = z.infer<typeof userRegistrationSchema>;
-
-export function RegistrationForm() {
-  const form = useForm<FormValues>({
-    resolver: zodResolver(userRegistrationSchema),
-    defaultValues: {
-      email: "",
-      username: "",
-      password: "",
-      passwordConfirmation: "",
-    },
+export function RegistrationForm({
+  onSuccess,
+  onError,
+  title = "Register",
+  description = "Create your account",
+}: RegistrationFormProps) {
+  const { form, handleSubmit, isLoading, error } = useRegistration({
+    onSuccess,
+    onError,
   });
-
-  const { reset, handleSubmit, control } = form;
-
-  async function onSubmit(values: FormValues) {
-    try {
-      const response = await registerUser(values);
-
-      if (response?.error) {
-        console.error("Registration error:", response.error);
-      } else {
-        console.log("Registration successful!");
-        reset();
-      }
-    } catch (error) {
-      console.error("Unexpected error:", error);
-    }
-  }
 
   return (
     <div className="flex min-h-screen items-center justify-center p-4">
       <Card className="w-full max-w-md">
         <CardHeader>
-          <CardTitle className="text-2xl text-center">Register</CardTitle>
+          <CardTitle className="text-2xl text-center">{title}</CardTitle>
           <CardDescription className="text-center">
-            Create your account
+            {description}
           </CardDescription>
         </CardHeader>
         <CardContent className="space-y-4">
+          {error && (
+            <div className="text-red-500 text-sm text-center" role="alert">
+              {error}
+            </div>
+          )}
           <Form {...form}>
-            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-              <FormField
-                control={control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Email</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="email"
-                        placeholder="Enter your email"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={control}
-                name="username"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Username</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="text"
-                        placeholder="Enter your username"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={control}
-                name="password"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="password"
-                        placeholder="Enter your password"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <FormField
-                control={control}
-                name="passwordConfirmation"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Confirm Password</FormLabel>
-                    <FormControl>
-                      <Input
-                        type="password"
-                        placeholder="Confirm your password"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-
-              <Button type="submit" className="w-full">
-                Register
+            <form
+              onSubmit={form.handleSubmit(handleSubmit)}
+              className="space-y-4"
+            >
+              <RegistrationFormFields control={form.control} />
+              <Button
+                type="submit"
+                className="w-full"
+                disabled={isLoading}
+                data-testid="register-button"
+              >
+                {isLoading ? "Registering..." : "Register"}
               </Button>
             </form>
           </Form>
