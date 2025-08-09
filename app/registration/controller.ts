@@ -1,7 +1,7 @@
 import { prisma } from "@/lib/prisma";
 import { z } from "zod";
 
-const userRegistrationSchema = z
+export const userRegistrationSchema = z
   .object({
     email: z.email("Please enter a valid email"),
     username: z.string(),
