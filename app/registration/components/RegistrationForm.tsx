@@ -36,6 +36,8 @@ export function RegistrationForm() {
     },
   });
 
+  const { reset, handleSubmit, control } = form;
+
   async function onSubmit(values: FormValues) {
     try {
       const response = await registerUser(values);
@@ -44,7 +46,7 @@ export function RegistrationForm() {
         console.error("Registration error:", response.error);
       } else {
         console.log("Registration successful!");
-        form.reset();
+        reset();
       }
     } catch (error) {
       console.error("Unexpected error:", error);
@@ -62,9 +64,9 @@ export function RegistrationForm() {
         </CardHeader>
         <CardContent className="space-y-4">
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+            <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
               <FormField
-                control={form.control}
+                control={control}
                 name="email"
                 render={({ field }) => (
                   <FormItem>
@@ -82,7 +84,7 @@ export function RegistrationForm() {
               />
 
               <FormField
-                control={form.control}
+                control={control}
                 name="username"
                 render={({ field }) => (
                   <FormItem>
@@ -100,7 +102,7 @@ export function RegistrationForm() {
               />
 
               <FormField
-                control={form.control}
+                control={control}
                 name="password"
                 render={({ field }) => (
                   <FormItem>
@@ -118,7 +120,7 @@ export function RegistrationForm() {
               />
 
               <FormField
-                control={form.control}
+                control={control}
                 name="passwordConfirmation"
                 render={({ field }) => (
                   <FormItem>
