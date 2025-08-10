@@ -14,3 +14,10 @@ export interface RegistrationFormProps {
   title?: string;
   description?: string;
 }
+
+export type UserParams = z.infer<typeof userRegistrationSchema>;
+
+export type UserRegistrationData = Pick<
+  z.infer<typeof userRegistrationSchema>,
+  "email" | "username" | "password"
+>;

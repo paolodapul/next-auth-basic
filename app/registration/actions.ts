@@ -31,8 +31,6 @@ export async function registerUser(data: FormValues) {
   }
 
   try {
-    console.log("Registering user:", result.data);
-
     const { email, username, password, passwordConfirmation } = result.data;
 
     const registrationController = new RegistrationsController();

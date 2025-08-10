@@ -1,25 +1,7 @@
 import { prisma } from "@/lib/prisma";
-import { z } from "zod";
 import { hashPassword } from "./actions";
-
-export const userRegistrationSchema = z
-  .object({
-    email: z.email("Please enter a valid email"),
-    username: z.string(),
-    password: z.string().min(8, "Password must be at least 8 characters"),
-    passwordConfirmation: z.string(),
-  })
-  .refine((data) => data.password === data.passwordConfirmation, {
-    message: "Passwords don't match",
-    path: ["passwordConfirmation"],
-  });
-
-type UserParams = z.infer<typeof userRegistrationSchema>;
-
-type UserRegistrationData = Pick<
-  z.infer<typeof userRegistrationSchema>,
-  "email" | "username" | "password"
->;
+import { userRegistrationSchema } from "./schema";
+import { UserParams, UserRegistrationData } from "./types";
 
 class RegistrationsController {
   /**
@@ -57,4 +39,4 @@ class RegistrationsController {
   }
 }
 
-export { RegistrationsController };
+export { RegistrationsController, userRegistrationSchema };
