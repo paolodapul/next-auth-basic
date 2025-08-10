@@ -4,6 +4,10 @@ To-do
 :password
 :password_reset
 
+Design improvements:
+
+- Password validation should happen both in frontend and backend
+
 Done:
 
 - Prisma with sqlite
