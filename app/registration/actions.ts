@@ -7,7 +7,6 @@ import bcrypt from "bcrypt";
 type FormValues = z.infer<typeof userRegistrationSchema>;
 
 export async function hashPassword(plainPassword: string) {
-  "use server";
   const saltRounds = 12; // Cost factor - higher = more secure but slower
   try {
     const hashedPassword = await bcrypt.hash(plainPassword, saltRounds);
