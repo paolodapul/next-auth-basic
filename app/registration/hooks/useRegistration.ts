@@ -9,6 +9,11 @@ export function useRegistration({
   onSuccess,
   onError,
 }: UseRegistrationProps = {}) {
+  /**
+   * type RegistrationFormValues - defines the shape of your form
+   * userRegistrationSchema - defines your validation rules
+   */
+
   const form = useForm<RegistrationFormValues>({
     resolver: zodResolver(userRegistrationSchema),
     defaultValues: {
